@@ -1,0 +1,463 @@
++*In[6]:*+
+[source, ipython3]
+----
+import pandas as pd
+url = "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/villagers.csv"
+df = pd.read_csv(url)
+df.isna().sum()
+----
+
+
++*Out[6]:*+
+----row_n           0
+id              1
+name            0
+gender          0
+species         0
+birthday        0
+personality     0
+song           11
+phrase          0
+full_id         0
+url             0
+dtype: int64----
+
+
++*In[3]:*+
+[source, ipython3]
+----
+import pandas as pd
+
+# Load the dataset from the URL
+url = "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/villagers.csv"
+villagers_df = pd.read_csv(url)
+
+# Get the number of rows and columns
+rows, columns = villagers_df.shape
+
+print(f"The dataset has {rows} rows and {columns} columns.")
+
+
+----
+
+
++*Out[3]:*+
+----
+The dataset has 391 rows and 11 columns.
+----
+
+
+
+
++*In[4]:*+
+[source, ipython3]
+----
+import pandas as pd
+
+# Load the dataset from the URL
+url = "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/villagers.csv"
+villagers_df = pd.read_csv(url)
+
+# Summary statistics for numerical columns
+summary_numerical = villagers_df.describe()
+
+print(summary_numerical)
+
+----
+
+
++*Out[4]:*+
+----
+            row_n
+count  391.000000
+mean   239.902813
+std    140.702672
+min      2.000000
+25%    117.500000
+50%    240.000000
+75%    363.500000
+max    483.000000
+----
+
+
++*In[5]:*+
+[source, ipython3]
+----
+# Summary of categorical columns
+summary_categorical = villagers_df.describe(include=['object'])
+
+print(summary_categorical)
+
+----
+
+
++*Out[5]:*+
+----
+             id     name gender species birthday personality          song  \
+count       390      391    391     391      391         391           380   
+unique      390      391      2      35      361           8            92   
+top     admiral  Admiral   male     cat     1-27        lazy  K.K. Country   
+freq          1        1    204      23        2          60            10   
+
+         phrase           full_id  \
+count       391               391   
+unique      388               391   
+top     wee one  villager-admiral   
+freq          2                 1   
+
+                                                      url  
+count                                                 391  
+unique                                                391  
+top     https://villagerdb.com/images/villagers/thumb/...  
+freq                                                    1  
+----
+
+
++*In[6]:*+
+[source, ipython3]
+----
+# Frequency counts of unique values in each categorical column
+for column in villagers_df.select_dtypes(include=['object']).columns:
+    print(f"\nValue counts for column '{column}':")
+    print(villagers_df[column].value_counts())
+
+----
+
+
++*Out[6]:*+
+----
+
+Value counts for column 'id':
+id
+admiral    1
+mott       1
+paula      1
+patty      1
+pate       1
+          ..
+eloise     1
+elmer      1
+ellie      1
+elise      1
+zucker     1
+Name: count, Length: 390, dtype: int64
+
+Value counts for column 'name':
+name
+Admiral    1
+Muffy      1
+Paula      1
+Patty      1
+Pate       1
+          ..
+Elvis      1
+Eloise     1
+Elmer      1
+Ellie      1
+Zucker     1
+Name: count, Length: 391, dtype: int64
+
+Value counts for column 'gender':
+gender
+male      204
+female    187
+Name: count, dtype: int64
+
+Value counts for column 'species':
+species
+cat          23
+rabbit       20
+frog         18
+squirrel     18
+duck         17
+dog          16
+cub          16
+pig          15
+bear         15
+mouse        15
+horse        15
+bird         13
+penguin      13
+sheep        13
+elephant     11
+wolf         11
+ostrich      10
+deer         10
+eagle         9
+gorilla       9
+chicken       9
+koala         9
+goat          8
+hamster       8
+kangaroo      8
+monkey        8
+anteater      7
+hippo         7
+tiger         7
+alligator     7
+lion          7
+bull          6
+rhino         6
+cow           4
+octopus       3
+Name: count, dtype: int64
+
+Value counts for column 'birthday':
+birthday
+1-27     2
+12-5     2
+7-31     2
+3-26     2
+8-3      2
+        ..
+4-3      1
+10-26    1
+7-23     1
+12-8     1
+3-8      1
+Name: count, Length: 361, dtype: int64
+
+Value counts for column 'personality':
+personality
+lazy      60
+normal    59
+cranky    55
+snooty    55
+jock      55
+peppy     49
+smug      34
+uchi      24
+Name: count, dtype: int64
+
+Value counts for column 'song':
+song
+K.K. Country     10
+Forest Life       9
+Imperial K.K.     7
+K.K. Soul         7
+K.K. Ragtime      7
+                 ..
+Aloha K.K.        2
+Drivin'           1
+Senor K.K.        1
+K.K.  Bazaar      1
+K.K. D&B          1
+Name: count, Length: 92, dtype: int64
+
+Value counts for column 'phrase':
+phrase
+wee one       2
+quacko        2
+bloop         2
+aye aye       1
+snoot         1
+             ..
+lambchop      1
+yeah buddy    1
+chow down     1
+unh-hunh      1
+pronk         1
+Name: count, Length: 388, dtype: int64
+
+Value counts for column 'full_id':
+full_id
+villager-admiral    1
+villager-muffy      1
+villager-paula      1
+villager-patty      1
+villager-pate       1
+                   ..
+villager-elvis      1
+villager-eloise     1
+villager-elmer      1
+villager-ellie      1
+villager-zucker     1
+Name: count, Length: 391, dtype: int64
+
+Value counts for column 'url':
+url
+https://villagerdb.com/images/villagers/thumb/admiral.98206ee.png    1
+https://villagerdb.com/images/villagers/thumb/muffy.1497c92.png      1
+https://villagerdb.com/images/villagers/thumb/paula.563ba81.png      1
+https://villagerdb.com/images/villagers/thumb/patty.3e17f7f.png      1
+https://villagerdb.com/images/villagers/thumb/pate.c60838c.png       1
+                                                                    ..
+https://villagerdb.com/images/villagers/thumb/elvis.57d4757.png      1
+https://villagerdb.com/images/villagers/thumb/eloise.112208b.png     1
+https://villagerdb.com/images/villagers/thumb/elmer.cc7df52.png      1
+https://villagerdb.com/images/villagers/thumb/ellie.5a144a6.png      1
+https://villagerdb.com/images/villagers/thumb/zucker.8dbb719.png     1
+Name: count, Length: 391, dtype: int64
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+The discrepancies between the dataset size given by df.shape and what is reported by df.describe is due to the fact that df.shape shows all columns, but df.describe only analyzes numerical columns by default. So, if the dataset contains both numerical and categorical data, df.describe will only summarize the numerical columns and because The "count" in df.describe shows the number of non-missing data for each column.
+#I used ChatGTP to explain me the concepts
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+The attribute is a proprety of an object, and doesn't need brackets because it is simply stating that proprety while a method perform an action on an object.
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+
+Dataset size: We explored how to load a dataset and determine the number of rows and columns using df.shape.
+
+Observations and variables: I explained that observations are the rows (individual records), while variables are the columns (attributes or characteristics).
+
+Summarizing data: I provided code examples to summarize datasets using df.describe() for numerical data and value_counts() for categorical data.
+
+Discrepancies in summaries: I explained why the number of columns and the "count" values reported by df.describe() might differ from df.shape (due to missing data and the type of columns analyzed).
+
+Attributes vs. methods: I clarified that attributes like df.shape return stored information without parentheses, while methods like df.describe() are functions that require parentheses to perform an action.
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+Count: The number of values in a column (except missing values).
+
+Mean: The average value of the data in a column.
+Std: The standard deviation, which measures how spread out the values are from the mean.
+25% : The value below which 25% of the data falls, also called the first quartile.
+50% : The middle value when the data is sorted in order, below which 50% of the data falls.
+75% : The value below which 75% of the data falls, indicating the third quartile.
+Max: The largest value in the column.
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+It's better to use df.dropna() over using del df['col'] to remove rows that contain missing values in any column to ensure that all rows have complete data
+Ex : A dataset of customer orders for an online shop and we need to remove rows with missing values in any column (e.g., missing product ID or customer name), we can use df.dropna() to clean the dataset while keeping all the columns.
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+On the contrary, it's better to use df['col'] for a column that contains mostly missing or irrelevant data, to completely remove that column from the dataset.
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+Removing irrelevant or unnecessary columns with del before using df.dropna() can be important because df.dropna() will remove rows that contain any missing values in any column. If we don't delete irrelevant columns first, we might unintentionally remove rows just because an irrelevant column has missing values.
+
+For example, if a column has lots of missing values but is not crucial for our analysis, applying df.dropna() before deleting the column could result in the loss of valuable data.
+----
+
+
++*In[3]:*+
+[source, ipython3]
+----
+import pandas as pd
+
+# Load the dataset from the given URL
+url = "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/villagers.csv"
+df = pd.read_csv(url)
+
+# Preview the initial state of the dataset
+print("Before Cleanup:")
+print(df.describe(include='all'))
+
+# Clean-up approach: Drop any columns with all missing values
+df_cleaned = df.dropna(axis=1, how='all')
+
+# Justification:
+# Using df.dropna(axis=1, how='all') will remove columns where all the values are missing.
+
+
+
+
+
+----
+
+
++*Out[3]:*+
+----
+Before Cleanup:
+             row_n       id     name gender species birthday personality  \
+count   391.000000      390      391    391     391      391         391   
+unique         NaN      390      391      2      35      361           8   
+top            NaN  admiral  Admiral   male     cat     1-27        lazy   
+freq           NaN        1        1    204      23        2          60   
+mean    239.902813      NaN      NaN    NaN     NaN      NaN         NaN   
+std     140.702672      NaN      NaN    NaN     NaN      NaN         NaN   
+min       2.000000      NaN      NaN    NaN     NaN      NaN         NaN   
+25%     117.500000      NaN      NaN    NaN     NaN      NaN         NaN   
+50%     240.000000      NaN      NaN    NaN     NaN      NaN         NaN   
+75%     363.500000      NaN      NaN    NaN     NaN      NaN         NaN   
+max     483.000000      NaN      NaN    NaN     NaN      NaN         NaN   
+
+                song   phrase           full_id  \
+count            380      391               391   
+unique            92      388               391   
+top     K.K. Country  wee one  villager-admiral   
+freq              10        2                 1   
+mean             NaN      NaN               NaN   
+std              NaN      NaN               NaN   
+min              NaN      NaN               NaN   
+25%              NaN      NaN               NaN   
+50%              NaN      NaN               NaN   
+75%              NaN      NaN               NaN   
+max              NaN      NaN               NaN   
+
+                                                      url  
+count                                                 391  
+unique                                                391  
+top     https://villagerdb.com/images/villagers/thumb/...  
+freq                                                    1  
+mean                                                  NaN  
+std                                                   NaN  
+min                                                   NaN  
+25%                                                   NaN  
+50%                                                   NaN  
+75%                                                   NaN  
+max                                                   NaN  
+----
+
+
++*In[4]:*+
+[source, ipython3]
+----
+import pandas as pd
+
+url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/titanic.csv"
+df = pd.read_csv(url)
+grouped_description = df.groupby('class')['age'].describe()
+print(grouped_description)
+
+----
+
+
++*Out[4]:*+
+----
+        count       mean        std   min   25%   50%   75%   max
+class                                                            
+First   186.0  38.233441  14.802856  0.92  27.0  37.0  49.0  80.0
+Second  173.0  29.877630  14.001077  0.67  23.0  29.0  36.0  70.0
+Third   355.0  25.140620  12.495398  0.42  18.0  24.0  32.0  74.0
+----
+
+
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
